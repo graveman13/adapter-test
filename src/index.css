@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0f1117;
+  color: #e6e6e6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.05rem;
+  margin: 0 0 12px;
+}
+
+.card {
+  background: #1a1d27;
+  border: 1px solid #2a2e3d;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.card.connected code {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #8be28b;
+  word-break: break-all;
+}
+
+.wallet-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wallet-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  border-bottom: 1px solid #2a2e3d;
+}
+
+.wallet-list li:last-child {
+  border-bottom: none;
+}
+
+.wallet-list img {
+  border-radius: 6px;
+}
+
+.icon-placeholder {
+  width: 28px;
+  text-align: center;
+}
+
+.badge {
+  margin-left: auto;
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #2a2e3d;
+  color: #9aa0b0;
+}
+
+.badge.installed {
+  background: #133d22;
+  color: #6fe08f;
+}
+
+.muted {
+  color: #9aa0b0;
+}

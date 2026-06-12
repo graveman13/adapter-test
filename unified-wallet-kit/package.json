@@ -1,0 +1,18 @@
+{
+  "name": "@local/unified-wallet-adapter",
+  "version": "0.1.0",
+  "description": "Reproduction of @jup-ag/wallet-adapter (Unified Wallet Kit) logic: unified provider, wallet-standard detection, modal UI, notifications, themes, i18n",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "peerDependencies": {
+    "@solana/wallet-adapter-base": "*",
+    "@solana/web3.js": "*",
+    "react": ">=18"
+  },
+  "dependencies": {
+    "@solana/wallet-standard-wallet-adapter-base": "^1.1.4",
+    "@wallet-standard/app": "^1.0.1"
+  }
+}
