@@ -1,4 +1,5 @@
 import React, { useCallback, type ReactNode } from 'react'
+import { WalletReadyState } from '@solana/wallet-adapter-base'
 import { useUnifiedWallet, useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext'
 import { useTranslation } from '../../contexts/TranslationProvider'
 import { CurrentUserBadge } from '../CurrentUserBadge'
@@ -15,7 +16,14 @@ export const UnifiedWalletButton: React.FC<{
   const handleClick = useCallback(async () => {
     try {
       // a wallet was previously selected — try connecting it directly
-      if (wallet?.adapter?.name) {
+      const isReady =
+        wallet?.adapter.readyState === WalletReadyState.Installed ||
+        wallet?.adapter.readyState === WalletReadyState.Loadable
+      if (wallet?.adapter?.name && isReady) {
+        // Reconnect to the already-selected, available wallet without the modal.
+        // Message signing for backend login is an explicit, separate user action
+        // (see useWalletLogin) — never auto-fire it here, or wallets pop an
+        // unexpected signature request right after connect.
         await connect()
         return
       }

@@ -6,6 +6,7 @@ import { useUnifiedWalletContext } from '../../contexts/UnifiedWalletContext'
 import { usePreviouslyConnected } from '../../contexts/WalletConnectionProvider/previouslyConnectedProvider'
 import { useTranslation } from '../../contexts/TranslationProvider'
 import { useOutsideClick, useReactiveEventListener } from '../../misc/utils'
+import { useWalletConflicts } from '../../hooks/useWalletConflicts'
 import { WalletListItem } from './WalletListItem'
 import NotInstalled from './NotInstalled'
 import OnboardingIntro from './Onboarding'
@@ -23,6 +24,7 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
   const { handleConnectClick, walletPrecedence, walletlistExplanation, theme, walletModalAttachments } =
     useUnifiedWalletContext()
   const previouslyConnected = usePreviouslyConnected()
+  const conflicts = useWalletConflicts()
   const { t } = useTranslation()
 
   const [screen, setScreen] = useState<Screen>('main')
@@ -91,6 +93,15 @@ const UnifiedWalletModal: React.FC<IUnifiedWalletModal> = ({ onClose }) => {
               </button>
             </div>
             <div className="uwk-modal-body">
+              {conflicts.map((conflict) => (
+                <div key={conflict.walletName} className="uwk-conflict-banner" role="alert">
+                  ⚠️ {conflict.walletName}: {t('may be intercepted by another wallet')}
+                  {conflict.interceptedBy ? ` (${conflict.interceptedBy})` : ''}.{' '}
+                  {conflict.interceptedBy
+                    ? `${t('Disable the "default wallet" option in')} ${conflict.interceptedBy}.`
+                    : t('Check your wallet extensions settings.')}
+                </div>
+              ))}
               <div className="uwk-section-title">
                 {hasPreviouslyConnected ? t('Recently used') : t('Recommended wallets')}
               </div>

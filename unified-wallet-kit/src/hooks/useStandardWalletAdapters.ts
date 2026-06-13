@@ -27,8 +27,16 @@ export function useStandardWalletAdapters(adapters: Adapter[]): Adapter[] {
   }, [get, on])
 
   return useMemo(() => {
+    // two extensions can register under the same name (e.g. Backpack
+    // impersonating Phantom) — keep only the first registration per name
+    const seenNames = new Set<string>()
     const standardAdapters = standardWallets
       .filter(isWalletAdapterCompatibleWallet)
+      .filter((wallet) => {
+        if (seenNames.has(wallet.name)) return false
+        seenNames.add(wallet.name)
+        return true
+      })
       .map(
         (wallet) =>
           new StandardWalletAdapter({ wallet: wallet as WalletAdapterCompatibleWallet }),

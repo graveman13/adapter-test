@@ -12,7 +12,9 @@
     "react": ">=18"
   },
   "dependencies": {
+    "@noble/curves": "^1.0.0",
     "@solana/wallet-standard-wallet-adapter-base": "^1.1.4",
-    "@wallet-standard/app": "^1.0.1"
+    "@wallet-standard/app": "^1.0.1",
+    "bs58": "^4.0.1"
   }
 }

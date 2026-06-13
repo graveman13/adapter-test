@@ -42,6 +42,19 @@ export {
 } from './contexts/WalletConnectionProvider/previouslyConnectedProvider'
 
 export { HARDCODED_WALLET_STANDARDS, WRAPPED_SOL_MINT } from './misc/constants'
+export { detectWalletConflicts } from './misc/walletConflicts'
+export type { IWalletConflict } from './misc/walletConflicts'
+export { useWalletConflicts } from './hooks/useWalletConflicts'
+
+// backend-login helpers (verified message signing)
+export {
+  loginWithWallet,
+  verifyEd25519,
+  WalletAccountMismatchError,
+} from './misc/auth'
+export type { LoginPayload, LoginMessageParams } from './misc/auth'
+export { useWalletLogin } from './hooks/useWalletLogin'
+export type { LoginStatus } from './hooks/useWalletLogin'
 // isIosAndRedirectable is re-exported from wallet-adapter-base above
 export {
   numberFormatter,

@@ -96,6 +96,15 @@ const CSS_TEXT = `
 .uwk-footer-links a { color: inherit; opacity: .6; font-size: .78rem; text-decoration: underline; }
 .uwk-footer-links a:hover { opacity: 1; }
 
+/* ---------- conflict warning ---------- */
+.uwk-conflict-banner {
+  margin: 10px 0 4px; padding: 10px 12px;
+  border-radius: 10px; font-size: .78rem; line-height: 1.4;
+  background: rgba(255, 176, 32, .12);
+  border: 1px solid rgba(255, 176, 32, .45);
+  color: #ffb020;
+}
+
 /* ---------- onboarding / not installed screens ---------- */
 .uwk-screen { padding: 20px; text-align: center; }
 .uwk-screen img.uwk-big-icon { width: 56px; height: 56px; border-radius: 12px; margin-bottom: 10px; }

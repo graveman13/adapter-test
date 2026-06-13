@@ -3,6 +3,7 @@ import {
   UnifiedWalletProvider,
   UnifiedWalletButton,
   useUnifiedWallet,
+  useWalletLogin,
   HARDCODED_WALLET_STANDARDS,
 } from '@local/unified-wallet-adapter'
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom'
@@ -26,6 +27,58 @@ const WalletNotification = {
   onConnecting: (props: WalletNotificationProps) => console.log('Підключення…', props),
   onDisconnect: (props: WalletNotificationProps) => console.log('Відключено:', props),
   onNotInstalled: (props: WalletNotificationProps) => console.log('Не встановлено:', props),
+}
+
+// Демонстрація логіна через підпис повідомлення з криптоперевіркою.
+// У реальному застосунку nonce приходить з бекенду, а payload відправляється
+// назад на /auth/verify, де підпис перевіряється повторно проти publicKey.
+function LoginPanel() {
+  const { login, status, payload, error, reset } = useWalletLogin()
+
+  const handleLogin = async () => {
+    try {
+      // ⚠️ у проді: const nonce = await fetch('/auth/nonce').then(r => r.text())
+      const nonce = crypto.randomUUID()
+      const proof = await login({ statement: 'Sign in to Jup Wallet Detect Demo', nonce })
+      // ⚠️ у проді: await fetch('/auth/verify', { method:'POST', body: JSON.stringify(proof) })
+      console.log('login proof (готовий для бекенду):', proof)
+    } catch (e) {
+      // статус/помилку вже збережено хуком
+    }
+  }
+
+  return (
+    <section className="card">
+      <h2>🔐 Логін через підпис</h2>
+      <button className="login-btn" onClick={handleLogin} disabled={status === 'signing'}>
+        {status === 'signing' ? 'Підпис…' : 'Підписати та увійти'}
+      </button>
+
+      {status === 'success' && payload && (
+        <div className="login-result ok">
+          <strong>✅ Підпис перевірено ({payload.method})</strong>
+          <div>Ключ: <code>{payload.publicKey}</code></div>
+          <div>Підпис: <code>{payload.signature}</code></div>
+        </div>
+      )}
+      {status === 'mismatch' && (
+        <div className="login-result err">
+          ⚠️ Підпис зроблено <b>іншим</b> гаманцем, ніж підключений
+          (очікувався {(error as any)?.expected?.slice(0, 8)}…). Логін відхилено —
+          вимкніть конфліктне розширення (Backpack «default wallet») і спробуйте знову.
+        </div>
+      )}
+      {status === 'rejected' && (
+        <div className="login-result err">Користувач відхилив підпис.</div>
+      )}
+      {status === 'error' && (
+        <div className="login-result err">Помилка: {error?.message}</div>
+      )}
+      {status !== 'idle' && status !== 'signing' && (
+        <button className="login-btn ghost" onClick={reset}>Скинути</button>
+      )}
+    </section>
+  )
 }
 
 function WalletsOverview() {
@@ -66,6 +119,8 @@ function WalletsOverview() {
           <code>{publicKey.toBase58()}</code>
         </div>
       )}
+
+      {connected && <LoginPanel />}
 
       <section className="card">
         <h2>🔍 Виявлені гаманці у браузері ({detected.length})</h2>

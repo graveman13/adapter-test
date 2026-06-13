@@ -5,6 +5,9 @@ import react from '@vitejs/plugin-react'
 // Polyfills required by Solana wallet adapters in the browser
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: process.env.PORT ? Number(process.env.PORT) : 5173,
+  },
   define: {
     'process.env': {},
     global: 'globalThis',
