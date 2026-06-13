@@ -19,7 +19,13 @@ export type { IUnifiedWalletContext, IUnifiedTheme } from './contexts/UnifiedWal
 
 export { default as HardcodedWalletStandardAdapter } from './adapters/HardcodedWalletStandardAdapter'
 
-export { UnifiedWalletButton } from './components/UnifiedWalletButton'
+export {
+  UnifiedWalletButton,
+  signInWithFallback,
+  WalletSignInVerificationError,
+  randomNonce,
+} from './components/UnifiedWalletButton'
+export type { SignInInput, SignInResult } from './components/UnifiedWalletButton'
 export { CurrentUserBadge } from './components/CurrentUserBadge'
 export { WalletIcon } from './components/WalletIcon'
 export { WalletListItem } from './components/UnifiedWalletModal/WalletListItem'

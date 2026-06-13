@@ -3,6 +3,7 @@ import {
   UnifiedWalletProvider,
   UnifiedWalletButton,
   useUnifiedWallet,
+  randomNonce,
   HARDCODED_WALLET_STANDARDS,
 } from '@local/unified-wallet-adapter'
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom'
@@ -57,7 +58,22 @@ function WalletsOverview() {
     <div className="container">
       <header>
         <h1>Jupiter Unified Wallet Kit — демо</h1>
-        <UnifiedWalletButton />
+        <UnifiedWalletButton
+          // у проді nonce приходить з бекенду: () => fetch('/auth/nonce').then(r => r.json())
+          getSignInInput={() => ({
+            statement: 'Sign in to Jup Wallet Detect Demo',
+            // SIWS nonce must be alphanumeric (no hyphens) — not crypto.randomUUID()
+            nonce: randomNonce(),
+          })}
+          onSignIn={(result) => {
+            console.log(`✅ ${result.method} verified=${result.verified}`, {
+              publicKey: result.publicKey,
+              message: result.message,
+            })
+            // у проді: fetch('/auth/verify', { method: 'POST', body: JSON.stringify(result) })
+          }}
+          onSignInError={(error) => console.warn('Sign-in error:', error)}
+        />
       </header>
 
       {connected && publicKey && (
